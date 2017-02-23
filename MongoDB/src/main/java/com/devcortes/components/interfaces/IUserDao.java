@@ -11,5 +11,8 @@ public interface IUserDao {
 	public void readAll();
 	public void deleteByLogin(String login);
 	public void clearCollection();
+	public void update(User user);
+	public void getAll();
+	public void getByLogin(String login);
 }
 

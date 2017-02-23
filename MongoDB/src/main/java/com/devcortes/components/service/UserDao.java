@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bson.conversions.Bson;
 import org.springframework.stereotype.Repository;
 
 import com.devcortes.components.entity.User;
 import com.devcortes.components.interfaces.IUserDao;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -40,6 +38,7 @@ public class UserDao implements IUserDao {
 			c1.append("password", user.getPassword());
 
 			collection.insertOne(c1);
+			
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -67,6 +66,7 @@ public class UserDao implements IUserDao {
 			}
 
 			collection.insertMany(documentOfUsers);
+			
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -110,13 +110,70 @@ public class UserDao implements IUserDao {
 			ConnectToMongoDb connectToMongoDb = new ConnectToMongoDb();
 			MongoDatabase db = connectToMongoDb.getMongoDbByName(DATABASE);
 			MongoCollection<Document> collection = db.getCollection(User.TABLE_NAME);
-
+			
 			collection.drop();
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
 
+	}
+
+	@Override
+	public void update(User user) {
+
+		try {
+
+			ConnectToMongoDb connectToMongoDb = new ConnectToMongoDb();
+			MongoDatabase db = connectToMongoDb.getMongoDbByName(DATABASE);
+			MongoCollection<Document> collection = db.getCollection(User.TABLE_NAME);
+			
+			Bson filter = new Document("login", "Cortes");
+			Bson newValue = new Document("login", user.getPassword());
+			Bson updateDocument = new Document("$set", newValue);
+			collection.updateOne(filter, updateDocument);
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	@Override
+	public void getAll() {
+		
+		try {
+
+			ConnectToMongoDb connectToMongoDb = new ConnectToMongoDb();
+			MongoDatabase db = connectToMongoDb.getMongoDbByName(DATABASE);
+			MongoCollection<Document> collection = db.getCollection(User.TABLE_NAME);
+			
+			for(Document doc : collection.find()){
+				
+				System.out.println(doc.toJson());
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	@Override
+	public void getByLogin(String login) {
+		
+		try {
+
+			ConnectToMongoDb connectToMongoDb = new ConnectToMongoDb();
+			MongoDatabase db = connectToMongoDb.getMongoDbByName(DATABASE);
+			MongoCollection<Document> collection = db.getCollection(User.TABLE_NAME);
+			
+			Document doc = collection.find(new BasicDBObject("login", login)).first();
+				
+			System.out.println(doc.toJson());
+			
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
 	}
 
 }

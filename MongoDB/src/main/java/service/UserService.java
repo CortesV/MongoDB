@@ -39,4 +39,22 @@ public class UserService {
 		iUserDao = userDao;
 		iUserDao.clearCollection();
 	}
+	
+	public void updateLogin(User user, UserDao userDao) {
+
+		iUserDao = userDao;
+		iUserDao.update(user);
+	}
+	
+	public void getAll(UserDao userDao) {
+
+		iUserDao = userDao;
+		iUserDao.getAll();
+	}
+	
+	public void getByLogin(String login, UserDao userDao) {
+
+		iUserDao = userDao;
+		iUserDao.getByLogin(login);;
+	}
 }

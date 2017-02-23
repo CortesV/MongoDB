@@ -46,14 +46,29 @@ public class MongoDbApplication {
 		listUser.add(user1);
 		listUser.add(user2);
 		listUser.add(user3);		
-			
+		
+		userService.clearCollection(userDao);
+		
 		userService.add(user, userDao);
 		
 		userService.addMany(listUser, userDao);
 		
+		
 		userService.readAll(userDao);
+		System.out.println("--------------------------------------------------");
+		
+		userService.updateLogin(user2, userDao);
+		
+		userService.readAll(userDao);
+		System.out.println("--------------------------------------------------");
 		
 		userService.deleteByLogin("Cortes", userDao);
-		userService.clearCollection(userDao);
+		
+		userService.readAll(userDao);
+		System.out.println("--------------------------------------------------");
+		
+		userService.getByLogin("CortesV", userDao);
+		System.out.println("--------------------------------------------------");
+		
 	}
 }
