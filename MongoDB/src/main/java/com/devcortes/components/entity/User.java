@@ -1,7 +1,10 @@
 package com.devcortes.components.entity;
 
 public class User {
-	private String id;
+	
+	public static String TABLE_NAME = "persons";
+	
+	private Integer id;
 	private String login;
 	private String password;
 
@@ -13,11 +16,11 @@ public class User {
 
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
